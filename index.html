@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>fitr.js</title>
+        <style></style>
+    </head>
+    <body>
+        <div class="fitr"><!-- føtex -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/bdf5A_3qjm5lc4d.png" crossorigin="" />
+        </div>
+        <div class="fitr"><!-- netto -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/9ba51_4xgm5lcsa.png" crossorigin="" />
+        </div>
+        <div class="fitr"><!-- fakta -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/101cD_3e7m5lbzn.png" crossorigin="" />
+        </div>
+        <div class="fitr"><!-- elgiganten -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/c35es_60zm5lbxu.png" crossorigin="" />
+        </div>
+        <div class="fitr"><!-- intersport -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/e62cn_72hm5lce5.png" crossorigin="" />
+        </div>
+        <div class="fitr"><!-- toysRus -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/1a98O_62tm5ldlk.png" crossorigin="" />
+        </div>
+        <div class="fitr"><!-- irma -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/d432U_2pbm5lceh.png" crossorigin="" />
+        </div>
+        <div class="fitr"><!-- bilka -->
+            <img src="https://etaproduction.s3.amazonaws.com/img/logo/default/93f13_2ywm5lbb0.png" crossorigin="" />
+        </div>
+
+        <script src="http://code.jquery.com/jquery-2.0.1.min.js"></script>
+        <script src="./fitr.js"></script>
+        <script>
+            /*
+                Usage:
+                    `var fitr = new Fitr(your_image_element, callback);`
+                    where callback is a function that executes when the image is ready
+                    usually you want to check for image edge with "fitr.hasEdge()" method
+                    if that returns true it is safe to color the background.
+                    The best color depends on your image, but usually
+                    the fitr.getCornerColors() returns good results.
+                    The return value of getCornerColors() is an array of FitrPixels.
+                    Get the color with toHEX() or toRGBA() method.
+
+            */
+            $(".fitr > img").each(function(){
+                var fitr = new Fitr(this, function(){
+                    console.log(fitr.getWidth(), fitr.getHeight());
+                    if(fitr.hasEdge()) {
+                        var colors = fitr.getCornerColors(3);
+                        if(colors.length > 0)
+                            $(this).parent().css({backgroundColor: colors[0].toRGBA()});
+                    }
+
+                    $($(this).parent()[0].appendChild(fitr.canvas)).css({border:'1px solid black'});
+                    fitr.clean();
+                });
+            });
+        </script>
+
+    </body>
+</html>
