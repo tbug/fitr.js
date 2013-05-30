@@ -1,4 +1,4 @@
-(function(out){
+(function(){
     function FitrPixel(pixelArray, x, y) {
         this.r = pixelArray[0];
         this.g = pixelArray[1];
@@ -24,6 +24,7 @@
     };
 
     function Fitr(img, onReady, filters, normalizers) {
+        var self = this;
         this.img = img;
         this.canvas = undefined;
         this.imageData = undefined;
@@ -32,7 +33,7 @@
         this._filters = filters || [Fitr.filters.alpha(1)];
 
         var callback = function() {
-            onReady.call(img);
+            onReady.call(self);
         };
 
         if(img.complete) {
@@ -82,8 +83,6 @@
             var ctx = this.canvas.getContext('2d');
             ctx.imageSmoothingEnabled = false;
             ctx.webkitImageSmoothingEnabled = false;
-
-            console.log(ctx);
             this.canvas.width = this.img.width;
             this.canvas.height = this.img.height;
             ctx.drawImage(this.img, 0, 0);
@@ -113,7 +112,6 @@
     Fitr.prototype.getCornerColors = function (depth) {
         if(!depth) depth = 3;
         var total = this.getDistribution(this.getCornerPixels(depth));
-        console.log(total);
         var colors = new Array(total.length);
         for (var i = total.length - 1; i >= 0; i--) {
             colors[i] = total[i].mean;
@@ -297,5 +295,16 @@
         }
     };
 
-    out(Fitr);
-}(window.define instanceof Function ? define : (function(o){window.Fitr = o;})  ));
+    /*
+        if requirejs is present, define Fitr with requirejs' define
+        else bind to window
+    */
+    if(window.define && window.define instanceof Function) {
+        define(function(){
+            return Fitr;
+        });
+    }
+    else {
+        window.Fitr = Fitr;
+    }
+}());

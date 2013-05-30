@@ -46,16 +46,17 @@
 
             */
             $(".fitr > img").each(function(){
-                var fitr = new Fitr(this, function(){
-                    console.log(fitr.getWidth(), fitr.getHeight());
-                    if(fitr.hasEdge()) {
-                        var colors = fitr.getCornerColors(3);
+                var img = this;
+                var fitr = new Fitr(img, function(){
+                    console.log(this.getWidth(), this.getHeight());
+                    if(this.hasEdge()) {
+                        var colors = this.getCornerColors(3);
                         if(colors.length > 0)
-                            $(this).parent().css({backgroundColor: colors[0].toRGBA()});
+                            $(img).parent().css({backgroundColor: colors[0].toRGBA()});
                     }
 
-                    $($(this).parent()[0].appendChild(fitr.canvas)).css({border:'1px solid black'});
-                    fitr.clean();
+                    $($(img).parent()[0].appendChild(this.canvas)).css({border:'1px solid black'});
+                    this.clean();
                 });
             });
         </script>
